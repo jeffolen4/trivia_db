@@ -1,3 +1,18 @@
+html, body {
+  /*background: url("../img/waltdisney_background.jpeg") no-repeat center center fixed;*/
+  background: url("../img/logo_2.jpg") no-repeat center center fixed;
+  -webkit-background-size: cover; /* For WebKit*/
+  -moz-background-size: cover;    /* Mozilla*/
+  -o-background-size: cover;      /* Opera*/
+  background-size: cover;
+}
+
+.container {
+  /*background-image: url("../img/waltdisney_background.jpeg");*/
+  /*color: #1A0000;*/
+  /*color: #333300;*/
+  color: #A3D1FF;
+}
 .hidden {
   display: none;
 }
@@ -29,7 +44,11 @@ select {
 
 .form-control {
   margin-left: 0px;
-  padding-left: 5px
+  padding-left: 5px;
+}
+
+input {
+  color: black;  
 }
 
 #column1, #column2 {

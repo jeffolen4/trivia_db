@@ -44,7 +44,7 @@ ajaxTools.xmlhttp = ajaxTools.xmlhttp || ajaxTools.GetXmlHttpObject();
             ajaxTools.question.push( row );
           });
           ajaxTools.question.forEach( function (row) {
-            tableRow = $('<tr><td><input class="editchkbox" type="checkbox" value="'+ row.id +'"></td><td>' + row.question + '</td></tr>');
+            tableRow = $('<tr><td class="hidden"><input class="editchkbox" type="checkbox" value="'+ row.id +'"></td><td>' + row.question + '</td></tr>');
             tableRow.click( function (event) {
               var row = event.currentTarget.children;
               var id = $(row).children().val()
