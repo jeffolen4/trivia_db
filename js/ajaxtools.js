@@ -1,5 +1,16 @@
 var ajaxTools = ajaxTools || {};
 
+
+// create the categories object
+ajaxTools.categories = ajaxTools.categories || [];
+ajaxTools.currentCategory= ajaxTools.currentCategory || {};
+
+// create the question object
+ajaxTools.question = ajaxTools.question || [];
+ajaxTools.currentQuestion = ajaxTools.currentQuestion || {};
+
+
+
 // function to create the XMLHttp object
 ajaxTools.GetXmlHttpObject = function () {
   if (window.XMLHttpRequest)  {
@@ -16,13 +27,37 @@ ajaxTools.GetXmlHttpObject = function () {
 // create the actual XMLHttp object for use later
 ajaxTools.xmlhttp = ajaxTools.xmlhttp || ajaxTools.GetXmlHttpObject();
 
-// create the categories object
-ajaxTools.categories = ajaxTools.categories || [];
-ajaxTools.currentCategory= ajaxTools.currentCategory || {};
 
-// create the question object
-ajaxTools.question = ajaxTools.question || [];
+  ajaxTools.loadQuestions = function ( startId, categoryId, count, direction ) {
+    $.ajax({
+      type: "POST",
+      url: "getquestions.php",
+      data: { "startid": startId, "count":count, "catid": categoryId, "direction":direction }
+    })
+      .done(function( msg ) {
+        // var outputDump = $('<p>'+ msg + '</p>');
+        // $(".container").append( outputDump );
+        msg = JSON.parse(msg);
+        if ( msg[1].code == "success") {
+          msg[2].forEach( function (row) {
+            ajaxTools.question.push( row );
+          });
+          ajaxTools.question.forEach( function (row) {
+            tableRow = $('<tr><td><input class="editchkbox" type="checkbox" value="'+ row.id +'"></td><td>' + row.question + '</td></tr>');
+            tableRow.click( function (event) {
+              var row = event.currentTarget.children;
+              var id = $(row).children().val()
+              url = "add_question.html?title="+encodeURIComponent(ajaxTools.currentCategory.title) +
+              "&id="+id;
+              window.location = url;
 
+              return false;
+            })
+            $("tbody").append(tableRow);
+          });
+        };
+      });
+  }
 
 // Category return object format:
 //   [ "category", {code:"error", message:"test error message"}, {categories:[ {id:1,description:"blah blah blah"}, {id:2, title:"blah2 blah2 blah2", year:1987 } ]} ]
@@ -41,6 +76,7 @@ ajaxTools.loadCategory = function ( results ) {
     ajaxTools.categories.push( val );
     $("#categories").append('<option value="' + val.id + '">' + val.title + ' - ' + val.year + '</option>');
   });
+  ajaxTools.loadQuestions( 1, ajaxTools.currentCategory.id, 10, "FWD" );
 }
 
 

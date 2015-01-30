@@ -5,6 +5,7 @@ $(document).ready( function () {
   // var GetXmlHttpObject = ajaxTools.GetXmlHttpObject;
   var handleResponse = ajaxTools.handleResponse;
   var updateQuestion = ajaxTools.updateQuestion;
+  var loadQuestion   = ajaxTools.loadQuestion;
 
   var editQuestion = $("#info-question");
   var editAnswer1 = $("#info-answer1");
@@ -27,15 +28,33 @@ $(document).ready( function () {
 
   $("#movie-name").text(parmTitle);
 
+  // Get the question if this is an update operation
   if ( parmQuestionId !== null ) {
-    loadQuestion( parmQuestionId );
-    editQuestion = ajaxTools.currentQuestion.question;
-    editAnswer1  = ajaxTools.currentQuestion.answer1;
-    editAnswer2  = ajaxTools.currentQuestion.answer2;
-    editAnswer3  = ajaxTools.currentQuestion.answer3;
-    editAnswer4  = ajaxTools.currentQuestion.answer4;
-    $("#upd-question").removeClass("hidden");
-    mode = "upd";
+      $.ajax({
+        type: "POST",
+        url: "getquestion.php",
+        data: { "id": parmQuestionId }
+      })
+        .done(function( msg ) {
+          // var outputDump = $('<p>'+ msg + '</p>');
+          // $(".container").append( outputDump );
+          msg = JSON.parse(msg);
+          if ( msg[1].code == "success") {
+            ajaxTools.currentQuestion.question = msg[2][0].question;
+            ajaxTools.currentQuestion.answer1 = msg[2][0].answer1;
+            ajaxTools.currentQuestion.answer2 = msg[2][0].answer2;
+            ajaxTools.currentQuestion.answer3 = msg[2][0].answer3;
+            ajaxTools.currentQuestion.answer4 = msg[2][0].answer4;
+            editQuestion.val( ajaxTools.currentQuestion.question );
+            editAnswer1.val( ajaxTools.currentQuestion.answer1 );
+            editAnswer2.val( ajaxTools.currentQuestion.answer2 );
+            editAnswer3.val( ajaxTools.currentQuestion.answer3 );
+            editAnswer4.val( ajaxTools.currentQuestion.answer4 );
+            $("#movie-name").text( msg[2][0].title );
+            $("#upd-question").removeClass("hidden");
+            mode = "upd";
+          }
+        });
   } else {
     $("#add-question").removeClass("hidden");
     mode = "add";
