@@ -36,8 +36,8 @@ $(document).ready( function () {
         data: { "id": parmQuestionId }
       })
         .done(function( msg ) {
-          // var outputDump = $('<p>'+ msg + '</p>');
-          // $(".container").append( outputDump );
+          var outputDump = $('<p>'+ msg + '</p>');
+          $(".container").append( outputDump );
           msg = JSON.parse(msg);
           if ( msg[1].code == "success") {
             ajaxTools.currentQuestion.question = msg[2][0].question;
@@ -98,5 +98,44 @@ $(document).ready( function () {
       $("#result-message").text(rc);
     }
   });
+
+  $("#upd-question").click( function (event) {
+    var errorFound = false;
+    $(".error").hide();
+
+    if ( editQuestion.val() === "" ) {
+      $("#err-question-blank").show();
+      errorFound = true;
+    }
+    if ( editAnswer1.val() === "" ) {
+      $("#err-answer1-blank").show();
+      errorFound = true;
+    }
+    if ( editAnswer2.val() === "" ) {
+      $("#err-answer2-blank").show();
+      errorFound = true;
+    }
+    if ( editAnswer3.val() === "" ) {
+      $("#err-answer3-blank").show();
+      errorFound = true;
+    }
+    if ( editAnswer4.val() === "" ) {
+      $("#err-answer4-blank").show();
+      errorFound = true;
+    }
+
+    if (!(errorFound)) {
+      var rc = updateQuestion( mode,
+                      editQuestion.val(),
+                      editAnswer1.val(),
+                      editAnswer2.val(),
+                      editAnswer3.val(),
+                      editAnswer4.val(),
+                      parmQuestionId,
+                      parmTitle  );
+      $("#result-message").text(rc);
+    }
+  });
+
 
 })

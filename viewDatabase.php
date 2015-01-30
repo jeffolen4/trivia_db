@@ -6,13 +6,11 @@ $failed = false;
 
 require_once('config_category.php');
 
-// if database connection failed then return error
-if ( $failed ) {
-  print json_encode($returnVal);
-  return;
-}
+$query = "delete from questions";
 
-$query = "SELECT * from ".$_GET['db'] ." LIMIT 5";
+$link->query($query);
+
+$query = "SELECT * from ".$_GET['db'];
 
 print "query: ".$query."<br>";
 
@@ -35,9 +33,10 @@ if ($result = $link->query($query)) {
 
 
     while ( $row = $result->fetch_assoc() ) {
-      var_dump($row);
+      print_r($row);
+      print "<br>";
     }
-    
+
     $result->close();
 } else {
   print "query failed. error: ".$link->error;

@@ -156,30 +156,18 @@ ajaxTools.updateQuestion = function ( mode, question, answer1, answer2, answer3,
     return false;
   }
 
-  // $.ajax({ // ajax call starts
-  //   url: 'updatequestion.php',
-  //   data: { "mode":mode, "question":question, "answer1":answer1,
-  //       "answer2":answer2,"answer3":answer3,"answer4":answer4, "id":id },
-  //   dataType: 'text',
-  //   success: function(data) {
-  //     $("#result-message").text(data);
-  //   }
-  // });
-
-  question = encodeURIComponent(question);
-  answer1 = encodeURIComponent(answer1);
-  answer2 = encodeURIComponent(answer2);
-  answer3 = encodeURIComponent(answer3);
-  answer4 = encodeURIComponent(answer4);
-  title = encodeURIComponent(title);
-
-  var url="updatequestion.php?id="+id+"&question="+question+"&answer1="+answer1;
-  url += "&answer2="+answer2+"&answer3="+answer3+"&answer4="+answer4+"&title="+title;
-  // override caching
-  url=url+"&sid="+Math.random();
-
-  ajaxTools.xmlhttp.onreadystatechange=ajaxTools.handleResponse;
-  ajaxTools.xmlhttp.open("GET",url,true);
-  ajaxTools.xmlhttp.send(null);
-
+  $.ajax({
+    type: "POST",
+    url: "updatequestion.php",
+    data: { "id": id, "question":question, "answer1":answer1, "answer2":answer2, "answer3":answer3, "answer4":answer4, "title":title  }
+  })
+    .done(function( msg ) {
+      //var outputDump = $('<p>'+ msg + '</p>');
+      //$(".container").append( outputDump );
+      msg = JSON.parse(msg);
+      if ( msg[1].code == "success") {
+        url = "list_category.html?id="+ id;
+        window.location = url;
+      }
+    });
 }
