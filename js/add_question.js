@@ -24,7 +24,7 @@ $(document).ready( function () {
 
   var mode = "add";
   var parmQuestionId = gup('id', window.location.href );
-  var parmTitle = gup('title', window.location.href );
+  var parmTitle = decodeURIComponent(gup('title', window.location.href ));
 
   $("#movie-name").text(parmTitle);
 
@@ -36,8 +36,8 @@ $(document).ready( function () {
         data: { "id": parmQuestionId }
       })
         .done(function( msg ) {
-          var outputDump = $('<p>'+ msg + '</p>');
-          $(".container").append( outputDump );
+          //var outputDump = $('<p>'+ msg + '</p>');
+          //$(".container").append( outputDump );
           msg = JSON.parse(msg);
           if ( msg[1].code == "success") {
             ajaxTools.currentQuestion.question = msg[2][0].question;
@@ -97,6 +97,7 @@ $(document).ready( function () {
                       parmTitle  );
       $("#result-message").text(rc);
     }
+    event.preventDefault();
   });
 
   $("#upd-question").click( function (event) {
@@ -135,6 +136,7 @@ $(document).ready( function () {
                       parmTitle  );
       $("#result-message").text(rc);
     }
+    event.preventDefault();
   });
 
 

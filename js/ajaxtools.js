@@ -8,6 +8,7 @@ ajaxTools.currentCategory= ajaxTools.currentCategory || {};
 // create the question object
 ajaxTools.question = ajaxTools.question || [];
 ajaxTools.currentQuestion = ajaxTools.currentQuestion || {};
+ajaxTools.parmTitle = ajaxTools.parmTitle || null;
 
 
 
@@ -74,7 +75,13 @@ ajaxTools.loadCategory = function ( results ) {
   ajaxTools.currentCategory = categories[0];
   categories.forEach( function ( val ) {
     ajaxTools.categories.push( val );
-    $("#categories").append('<option value="' + val.id + '">' + val.title + ' - ' + val.year + '</option>');
+    newSelectItem = '<option value="' + val.id + '"';
+    if ( ajaxTools.parmTitle != null && ajaxTools.parmTitle == val.title ) {
+      newSelectItem += " selected";
+      ajaxTools.currentCategory = val;
+    }
+    newSelectItem += '>' + val.title  + '</option>'
+    $("#categories").append(newSelectItem);
   });
   ajaxTools.loadQuestions( 1, ajaxTools.currentCategory.id, 10, "FWD" );
 }
@@ -166,7 +173,7 @@ ajaxTools.updateQuestion = function ( mode, question, answer1, answer2, answer3,
       //$(".container").append( outputDump );
       msg = JSON.parse(msg);
       if ( msg[1].code == "success") {
-        url = "list_category.html?id="+ id;
+        url = "list_category.html?title="+ msg[2][0].title;
         window.location = url;
       }
     });

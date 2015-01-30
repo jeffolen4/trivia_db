@@ -101,7 +101,7 @@ for ($i=0; $i <= 3; $i++ ) {
 // // prepare return object
 $returnVal = array( $request, array( "code" => "success", "message" => "success"), array() );
 
-$returnVal[2][] = array( "id" => $questionId );
+$returnVal[2][] = array( "id" => $questionId, "title" => $requestTitle );
 
 //var_dump( json_encode($returnVal) );
 print json_encode($returnVal);

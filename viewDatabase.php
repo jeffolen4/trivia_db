@@ -6,9 +6,9 @@ $failed = false;
 
 require_once('config_category.php');
 
-$query = "delete from questions";
-
-$link->query($query);
+// $query = "delete from questions";
+//
+// $link->query($query);
 
 $query = "SELECT * from ".$_GET['db'];
 
